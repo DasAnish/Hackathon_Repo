@@ -1,5 +1,5 @@
 
-local testgame = require("asteroids")
+local testgame = require("snakegame")
 local screensize={640,480}
 local games={testgame}
 function love.load()

@@ -1,6 +1,6 @@
  -- remember to make a load and and update and stuff
-
- function Snake_load() 
+local game={}
+ function game.setup(size)
 
 	math.randomseed(os.time())
 
@@ -10,11 +10,11 @@
 	love.graphics.setFont(font)
 
 	display_size = {}
-	display_size.x = love.graphics.getWidth();
-	display_size.y = love.graphics.getHeight();
+	display_size.x = size[1]
+	display_size.y = size[2]
 
 	apple = {}
-	-- set apple.x and apple.y but need the random thing for it 
+	-- set apple.x and apple.y but need the random thing for it
 	apple.x = math.random(50, display_size.x - 50)
 	apple.y = math.random(50, display_size.y - 50)
 	apple.size = appleImage:getHeight();
@@ -26,7 +26,7 @@
 	dir = 0 -- 0L 1D 2R 3U
 
 	step = 15 -- the number of pixels the box moves by
-	
+
 
 	body = {}
 
@@ -35,8 +35,8 @@
 
  end
 
- function Snake_Update(dt) 
-	if (not gameExit) then 
+ function Snake_Update(dt)
+	if (not gameExit) then
 		Snake_update(dt)
 	end
 
@@ -46,21 +46,21 @@
 end
 
 
- function Snake_update(dt) 
+function game.on_focused(dt)
 	love.timer.sleep(1/30)
 
 	if love.keyboard.isDown("left") then
 		dir = 0
 	elseif love.keyboard.isDown("right") then
 		dir = 2
-	elseif love.keyboard.isDown("up") then 
+	elseif love.keyboard.isDown("up") then
 		dir = 3
 	elseif love.keyboard.isDown("down") then
 		dir = 1
 	end
 
 	local temp = {}
-	temp.x = head.x 
+	temp.x = head.x
 	temp.y = head.y
 	table.insert(body, temp) -- adding the head pos to the body before updating head
 
@@ -80,18 +80,18 @@ end
 	gameExit = gameExit or collionSelf()
 
 	-- now need to update the body and remove the latest value
-	if (not eatingFood()) then 
+	if (not eatingFood()) then
 		table.remove(body, 1)
-	else 
+	else
 		-- assign a new position for the food
 		apple.x = math.random(50, display_size.x - 50)
 		apple.y = math.random(50, display_size.y - 50)
 		love.graphics.print("ate food")
 	end
-	
+
  end
 
- function Snake_draw() 
+function game.render(offset)
 	-- love.graphics.setColor(0,0,1)
 	-- drawBackground()
 	love.graphics.setBackgroundColor(0, 0, 0)
@@ -112,7 +112,7 @@ end
 		love.graphics.setColor(0, 0, 0)
 		love.graphics.rectangle('line', part.x, part.y, step, step)
 		-- st = st .. part.x .. " " .. part.y .. " "
-	end 
+	end
 	-- love.graphics.print(st)
 
 	love.graphics.setColor(1, 1, 1)
@@ -127,20 +127,20 @@ end
 	end
  end
 
- function drawBackground() 
+ function drawBackground()
 
 	for i = 0, love.graphics.getHeight() / backgroundImage:getHeight() do
 		for j = 0, love.graphics.getWidth() / backgroundImage:getWidth() do
 			love.graphics.draw(backgroundImage, i*backgroundImage:getHeight(), j*backgroundImage:getWidth())
 		end
 	end
-	
+
  end
 
  -- function to check for collision
- function collionSelf() 
+ function collionSelf()
 
-	for i = 1, #body, 1 do 
+	for i = 1, #body, 1 do
 		local part = body[i]
 		if (head.x == part.x and head.y == part.y) then
 			return true
@@ -149,11 +149,12 @@ end
 	return false
  end
 
- function eatingFood() 
+ function eatingFood()
 
 	return (head.x > apple.x and head.x < apple.x + apple.size or
-		head.x + step > apple.x and head.x + step < apple.x + apple.size) and 
-		(head.y > apple.y and head.y < apple.y + apple.size or 
-		head.y + step > apple.y and head.y + step < apple.y + apple.size) 
+		head.x + step > apple.x and head.x + step < apple.x + apple.size) and
+		(head.y > apple.y and head.y < apple.y + apple.size or
+		head.y + step > apple.y and head.y + step < apple.y + apple.size)
 
  end
+return game
