@@ -10,7 +10,7 @@ local K_AST_SPEED=128
 local player_thrusting=false
 local asteroids={}
 local laser=nil
-local difficulty=10
+local difficulty=5
 local sx,sy
 function draw_rot_poly(x,y,r,col,mode,poly,scale)
   scale=scale or 1
@@ -58,6 +58,7 @@ function game.setup(size)
     r=math.random()*math.pi*2,w=(math.random()-0.5)*0.1}
     asteroids[i].csz=asteroids[i].sz*14
   end
+  game.done=false
 end
 function game.render(offset,size)
   ox,oy=unpack(offset)
@@ -114,7 +115,7 @@ function game.on_focused(dt)
     if #dead_asteroids>0 then
       local delta=0
       for _,i in ipairs(dead_asteroids) do
-        target=i+delta
+        local target=i+delta
         tar_asteroid=asteroids[target]
         if tar_asteroid.sz>1.5 then
           split_angle=laser.r-math.pi/2
@@ -129,6 +130,9 @@ function game.on_focused(dt)
         table.remove(asteroids,target)
       end
       laser=nil
+      if #asteroids==0 then
+        game.done=true
+      end
     end
   end
 end

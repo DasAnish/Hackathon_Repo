@@ -1,5 +1,6 @@
  -- remember to make a load and and update and stuff
 local game={}
+game.done=false
  function game.setup(size)
 
 	math.randomseed(os.time())
@@ -23,7 +24,7 @@ local game={}
 	head = {}
 	head.x = display_size.x / 2
 	head.y = display_size.y / 2
-
+  target=10
 	dir = 0 -- 0L 1D 2R 3U
 
 	step = 15 -- the number of pixels the box moves by
@@ -50,13 +51,13 @@ end
 function Snake_update(dt)
 	love.timer.sleep(1/30)
 
-	if love.keyboard.isDown("left") then
+	if love.keyboard.isDown("a") then
 		dir = 0
-	elseif love.keyboard.isDown("right") then
+	elseif love.keyboard.isDown("d") then
 		dir = 2
-	elseif love.keyboard.isDown("up") then
+	elseif love.keyboard.isDown("w") then
 		dir = 3
-	elseif love.keyboard.isDown("down") then
+	elseif love.keyboard.isDown("s") then
 		dir = 1
 	end
 
@@ -87,7 +88,7 @@ function Snake_update(dt)
 		-- assign a new position for the food
 		apple.x = math.random(50, display_size.x - 50)
 		apple.y = math.random(50, display_size.y - 50)
-		love.graphics.print("ate food")
+    game.done=#body==target
 	end
 
  end
@@ -121,7 +122,7 @@ function game.render(offset)
 	-- love.graphics.rectangle('fill', apple.x, apple.y, apple.size, apple.size)
 	love.graphics.draw(appleImage, apple.x+ox, apple.y+oy)
 
-	love.graphics.print("Score: " .. #body, 20+ox, 20+oy, 0, 2)
+	love.graphics.print("Score: " .. #body .. "/"..target, 20+ox, 20+oy, 0, 2)
 
 	if (gameExit) then
 		love.graphics.print("Game Over", display_size.x / 2 - 200+ox, display_size.y / 2-30+oy, 0, 5)
