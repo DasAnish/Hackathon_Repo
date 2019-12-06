@@ -1,17 +1,13 @@
 require('snakegame')
 
 function love.load()
-	load()
+	Snake_load()
 end
 
 function love.update(dt)
-	Update(dt)
+	Snake_Update(dt)
 end
 
 function love.draw()
-	draw()
-end
-
-function clear() 
-
+	Snake_draw()
 end

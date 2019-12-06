@@ -1,6 +1,6 @@
  -- remember to make a load and and update and stuff
 
- function load() 
+ function Snake_load() 
 
 	math.randomseed(os.time())
 
@@ -35,18 +35,18 @@
 
  end
 
- function Update(dt) 
+ function Snake_Update(dt) 
 	if (not gameExit) then 
-		update(dt)
+		Snake_update(dt)
 	end
 
 	if (love.keyboard.isDown("p")) then
-		load()
+		Snake_load()
 	end
 end
 
 
- function update(dt) 
+ function Snake_update(dt) 
 	love.timer.sleep(1/30)
 
 	if love.keyboard.isDown("left") then
@@ -59,7 +59,7 @@ end
 		dir = 1
 	end
 
-	temp = {}
+	local temp = {}
 	temp.x = head.x 
 	temp.y = head.y
 	table.insert(body, temp) -- adding the head pos to the body before updating head
@@ -91,7 +91,7 @@ end
 	
  end
 
- function draw() 
+ function Snake_draw() 
 	-- love.graphics.setColor(0,0,1)
 	-- drawBackground()
 	love.graphics.setBackgroundColor(0, 0, 0)
@@ -105,7 +105,7 @@ end
 	-- st = ""
 
 	for i = 1, #body do -- putting all the bodies onto the screen
-		part = body[i]
+		local part = body[i]
 		-- love.graphics.print(" " .. i .. " " .. #body)
 		love.graphics.setColor(0, 1, 0)
 		love.graphics.rectangle('fill', part.x, part.y, step, step)
@@ -141,7 +141,7 @@ end
  function collionSelf() 
 
 	for i = 1, #body, 1 do 
-		part = body[i]
+		local part = body[i]
 		if (head.x == part.x and head.y == part.y) then
 			return true
 		end
