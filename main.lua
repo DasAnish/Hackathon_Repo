@@ -21,10 +21,24 @@ function love.update(dt)
   if love.mouse.isDown(1) then
     mx,my=love.mouse.getPosition()
     local n=math.floor(mx/screensize[1])%ROW_LENGTH+math.floor(my/screensize[2])*ROW_LENGTH+1
-    if 0<n and n<=#games then
+    if 0<n and n<=#games and not games[n].done then
       cgame=n
     end
   end
+  if games[cgame].done then
+    local n=cgame
+    while true do
+      n=n%#games+1
+      if not games[n].done then
+        cgame=n
+        break
+      elseif n~=cgame-1 or (cgame==1 and n==#games) then
+        love.event.quit()
+        break
+      end
+    end
+  end
+
   games[cgame].on_focused(dt)
 end
 
@@ -33,7 +47,10 @@ function love.draw()
     g.render({(i-1)*screensize[1],0},screensize)
     local f=1
     if i==cgame then
-      f=f+1
+      f=2
+    end
+    if g.done then
+      f=3
     end
     love.graphics.draw(frames[f],(i-1)*screensize[1],0,0,5,5)
   end
