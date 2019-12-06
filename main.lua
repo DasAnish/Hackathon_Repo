@@ -1,7 +1,11 @@
 local testgame = require("asteroids")
+local screensize={512,384}
 function love.load()
-  local w,h,f=love.window.getMode()
-  testgame.setup({w,h})
+  love.graphics.setDefaultFilter("nearest", "nearest")
+  love.window.setMode(unpack(screensize))
+  testgame.setup(screensize)
+  frame1=love.graphics.newImage("frame1.png")
+  frame2=love.graphics.newImage("frame2.png")
 end
 
 function love.update(dt)
@@ -9,5 +13,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  testgame.render({0,0},{1000,1000})
+  testgame.render({0,0},screensize)
+  love.graphics.draw(frame1,0,0,0,4,4)
 end
