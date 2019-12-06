@@ -15,6 +15,8 @@ function love.load()
   frame2=love.graphics.newImage("frame2.png")
   frame3=love.graphics.newImage("frame3.png")
   frames={frame1,frame2,frame3}
+  music=love.audio.newSource("tension.mp3","stream")
+  music:play()
 end
 
 function love.update(dt)

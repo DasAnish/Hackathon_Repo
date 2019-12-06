@@ -115,7 +115,7 @@ function game.on_focused(dt)
     if #dead_asteroids>0 then
       local delta=0
       for _,i in ipairs(dead_asteroids) do
-        target=i+delta
+        local target=i+delta
         tar_asteroid=asteroids[target]
         if tar_asteroid.sz>1.5 then
           split_angle=laser.r-math.pi/2
