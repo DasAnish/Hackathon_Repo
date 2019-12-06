@@ -1,6 +1,6 @@
 local alex = {}
 
-function alex.setup()
+function setup()
   alex.assets = {}
   alex.assets.player = love.graphics.newImage('assets/alienBeige_stand.png')
   alex.assets.jump = love.graphics.newImage('assets/alienBeige_jump.png')
@@ -27,16 +27,16 @@ function alex.setup()
 
 end
 
-function alex.collide(x1, y1, w1, h1, x2, y2, w2, h2)
+function collide(x1, y1, w1, h1, x2, y2, w2, h2)
   return not (x1 + w1 <= x2 or x2 + w2 <= x1 or y1 + h1 <= y2 or y2 + h2 <= y1)
 end
 
-function alex.touching(x1, y1, w1, h1, x2, y2, w2, h2)
+function touching(x1, y1, w1, h1, x2, y2, w2, h2)
   return (y1 + h1 == y2 and x1 + w1 >= x2)
 end
 
 
-function alex.on_focused(dt)
+function update(dt)
   if not alex.gameOver then
     if collide(alex.player.x, alex.player.y, alex.player.w, alex.player.h, 100,495,alex.width,alex.height) then
       alex.player.y = alex.player.y - 7
@@ -89,7 +89,7 @@ function alex.on_focused(dt)
         alex.score = alex.score + 1
       end
     end
-    ifalex.player.y > alex.height then
+    if alex.player.y > alex.height then
       alex.gameOver = true
     end
   elseif love.keyboard.isDown('rctrl') then
@@ -107,7 +107,7 @@ function alex.on_focused(dt)
   end
 end
 
-function alex.render()
+function render()
   love.graphics.setBackgroundColor(1, 0, 0)
   love.graphics.draw(alex.assets.floor, 100, 495, 0, 5, 1)
   love.graphics.draw(alex.assets.fire, 0, alex.height - 70, 0, 0.55)
@@ -119,7 +119,7 @@ function alex.render()
   end
   if alex.gameOver then
     love.graphics.setFont(alex.assets.fontBig)
-    love.graphics.print('alex.score: '..alex.score, alex.width / 8, alex.height / 6)
+    love.graphics.print('Score: '..alex.score, alex.width / 8, alex.height / 6)
     if alex.score >= 25 then
       love.graphics.print('YOU WIN', alex.width / 8, alex.height / 6 + 50)
       alex.won = true
@@ -128,7 +128,11 @@ function alex.render()
     end
     love.graphics.print('rctrl to play again!', alex.width / 8, alex.height / 6 + 100)
   else
-    love.graphics.print('alex.score: '..alex.score, 10, 10)
+    love.graphics.print('Score: '..alex.score, 10, 10)
   end
 end
+
+alex.setup = setup
+alex.update = update
+alex.render = render
 return alex

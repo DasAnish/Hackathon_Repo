@@ -1,12 +1,12 @@
 local flappyBird = {}
-function flappyBird.setup()
+function setup()
   flappyBird.assets = {}
-  flappyBird.assets.bird1 = love.graphics.newImage('assets/flappy-bird-white-blue/skeleton-01_fly_00.png')
-  flappyBird.assets.bird2 = love.graphics.newImage('assets/flappy-bird-white-blue/skeleton-01_fly_04.png')
-  flappyBird.assets.bird3 = love.graphics.newImage('assets/flappy-bird-white-blue/skeleton-01_fly_08.png')
-  flappyBird.assets.bird4 = love.graphics.newImage('assets/flappy-bird-white-blue/skeleton-01_fly_12.png')
-  flappyBird.assets.fontSmall = love.graphics.newFont('assets/earwig-factory/earwig factory rg.ttf', 32)
-  flappyBird.assets.fontBig = love.graphics.newFont('assets/earwig-factory/earwig factory rg.ttf', 64)
+  flappyBird.assets.bird1 = love.graphics.newImage('assets/skeleton-01_fly_00.png')
+  flappyBird.assets.bird2 = love.graphics.newImage('assets/skeleton-01_fly_04.png')
+  flappyBird.assets.bird3 = love.graphics.newImage('assets/skeleton-01_fly_08.png')
+  flappyBird.assets.bird4 = love.graphics.newImage('assets/skeleton-01_fly_12.png')
+  flappyBird.assets.fontSmall = love.graphics.newFont('assets/earwig factory rg.ttf', 32)
+  flappyBird.assets.fontBig = love.graphics.newFont('assets/earwig factory rg.ttf', 64)
   flappyBird.player = {}
   flappyBird.player.image = flappyBird.assets.bird1
   flappyBird.player.x = 100
@@ -27,7 +27,7 @@ function collide(x1, y1, w1, h1, x2, y2, w2, h2)
   return not (x1 + w1 <= x2 or x2 + w2 <= x1 or y1 + h1 <= y2 or y2 + h2 <= y1)
 end
 
-function flappyBird.update(dt)
+function update(dt)
   if not flappyBird.gameOver then
     flappyBird.player.y = flappyBird.player.y + flappyBird.player.velocity
     flappyBird.player.velocity = flappyBird.player.velocity + 0.5
@@ -81,7 +81,7 @@ function flappyBird.update(dt)
   end
 end
 
-function flappyBird.render()
+function render()
   love.graphics.setBackgroundColor(0, 0, 1)
   if flappyBird.jump then
     love.graphics.draw(flappyBird.assets.bird1, flappyBird.player.x, flappyBird.player.y, 0, 0.1)
@@ -99,10 +99,10 @@ function flappyBird.render()
   love.graphics.setColor(1,1,1)
   love.graphics.setFont(flappyBird.assets.fontSmall)
   if not flappyBird.gameOver then
-    love.graphics.print('flappyBird.score: '..flappyBird.score, 10, 10)
+    love.graphics.print('Score: '..flappyBird.score, 10, 10)
   else
     love.graphics.setFont(flappyBird.assets.fontBig)
-    love.graphics.print('flappyBird.score:'..flappyBird.score, flappyBird.width / 8, flappyBird.height / 6)
+    love.graphics.print('Score:'..flappyBird.score, flappyBird.width / 8, flappyBird.height / 6)
     if flappyBird.score >= 10 then
       love.graphics.print('YOU WIN', flappyBird.width / 8, flappyBird.height / 6 + 50)
     else
@@ -111,4 +111,7 @@ function flappyBird.render()
     love.graphics.print('lctrl to play again', flappyBird.width / 8, flappyBird.height / 6 + 100)
   end
 end
+flappyBird.setup = setup
+flappyBird.render = render
+flappyBird.update = update
 return flappyBird
