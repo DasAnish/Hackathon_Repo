@@ -8,10 +8,11 @@ local game={}
 	appleImage = love.graphics.newImage("assets/apple1.png")
 	font = love.graphics.newFont("assets/Amagro-bold.ttf", 12)
 	love.graphics.setFont(font)
-
-	display_size = {}
-	display_size.x = size[1]
-	display_size.y = size[2]
+  if size then
+  	display_size = {}
+  	display_size.x = size[1]
+  	display_size.y = size[2]
+  end
 
 	apple = {}
 	-- set apple.x and apple.y but need the random thing for it
@@ -35,18 +36,18 @@ local game={}
 
  end
 
- function Snake_Update(dt)
+function game.on_focused(dt)
 	if (not gameExit) then
 		Snake_update(dt)
 	end
 
-	if (love.keyboard.isDown("p")) then
-		Snake_load()
+	if (gameExit and love.keyboard.isDown("p")) then
+    game.setup()
 	end
 end
 
 
-function game.on_focused(dt)
+function Snake_update(dt)
 	love.timer.sleep(1/30)
 
 	if love.keyboard.isDown("left") then
@@ -92,15 +93,16 @@ function game.on_focused(dt)
  end
 
 function game.render(offset)
+  ox,oy=unpack(offset)
 	-- love.graphics.setColor(0,0,1)
 	-- drawBackground()
 	love.graphics.setBackgroundColor(0, 0, 0)
 	-- cleared the screen
 
 	love.graphics.setColor(0, 1, 0)
-	love.graphics.rectangle('fill', head.x, head.y, step, step) -- put the head on screen
+	love.graphics.rectangle('fill', head.x+ox, head.y+oy, step, step) -- put the head on screen
 	love.graphics.setColor(0, 0, 0)
-	love.graphics.rectangle('line', head.x, head.y, step, step)
+	love.graphics.rectangle('line', head.x+ox, head.y+oy, step, step)
 
 	-- st = ""
 
@@ -108,22 +110,22 @@ function game.render(offset)
 		local part = body[i]
 		-- love.graphics.print(" " .. i .. " " .. #body)
 		love.graphics.setColor(0, 1, 0)
-		love.graphics.rectangle('fill', part.x, part.y, step, step)
+		love.graphics.rectangle('fill', part.x+ox, part.y+oy, step, step)
 		love.graphics.setColor(0, 0, 0)
-		love.graphics.rectangle('line', part.x, part.y, step, step)
+		love.graphics.rectangle('line', part.x+ox, part.y+oy, step, step)
 		-- st = st .. part.x .. " " .. part.y .. " "
 	end
 	-- love.graphics.print(st)
 
 	love.graphics.setColor(1, 1, 1)
 	-- love.graphics.rectangle('fill', apple.x, apple.y, apple.size, apple.size)
-	love.graphics.draw(appleImage, apple.x, apple.y)
+	love.graphics.draw(appleImage, apple.x+ox, apple.y+oy)
 
-	love.graphics.print("Score: " .. #body, 20, 20, 0, 2)
+	love.graphics.print("Score: " .. #body, 20+ox, 20+oy, 0, 2)
 
 	if (gameExit) then
-		love.graphics.print("Game Over", display_size.x / 2 - 200, display_size.y / 2-30, 0, 5)
-		love.graphics.print("Press p to play again", display_size.x / 2 - 200, display_size.y / 2 + 100, 0, 3)
+		love.graphics.print("Game Over", display_size.x / 2 - 200+ox, display_size.y / 2-30+oy, 0, 5)
+		love.graphics.print("Press p to play again", display_size.x / 2 - 200+ox, display_size.y / 2 + 100+oy, 0, 3)
 	end
  end
 

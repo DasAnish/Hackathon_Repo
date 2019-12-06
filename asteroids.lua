@@ -60,19 +60,21 @@ function game.setup(size)
   end
 end
 function game.render(offset,size)
+  ox,oy=unpack(offset)
   love.graphics.setLineWidth(2)
   if player_thrusting then
-    draw_rot_poly(player.x,player.y,player.r,{255,200,0},"line",fire,0.4)
+    draw_rot_poly(player.x+ox,player.y+oy,player.r,{255,200,0},"line",fire,0.4)
   end
-  draw_rot_poly(player.x,player.y,player.r,{255,255,255},"line",arrow,0.4)
+  draw_rot_poly(player.x+ox,player.y+oy,player.r,{255,255,255},"line",arrow,0.4)
   --love.graphics.circle("line", player.x, player.y, player.csz, 100)
   for i,a in ipairs(asteroids) do
-    draw_rot_poly(a.x,a.y,a.r,{0.5,0.5,0.5},"line",asteroid,a.sz*2)
+    draw_rot_poly(a.x+ox,a.y+oy,a.r,{0.5,0.5,0.5},"line",asteroid,a.sz*2)
     --love.graphics.circle("line", a.x, a.y, a.csz, 100)
   end
   if laser then
-    draw_rot_poly(laser.x,laser.y,laser.r,{1,0,0},"fill",laser_poly,2)
+    draw_rot_poly(laser.x+ox,laser.y+oy,laser.r,{1,0,0},"fill",laser_poly,2)
   end
+  love.graphics.setColor(1,1,1)
 end
 function game.on_focused(dt)
   local dr = 0
