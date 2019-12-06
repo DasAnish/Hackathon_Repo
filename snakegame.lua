@@ -1,14 +1,14 @@
  -- remember to make a load and and update and stuff
 local game={}
 game.done=false
+local game_font=nil
  function game.setup(size)
 
 	math.randomseed(os.time())
 
 	backgroundImage = love.graphics.newImage("assets/background.jpg")
 	appleImage = love.graphics.newImage("assets/apple1.png")
-	font = love.graphics.newFont("assets/Amagro-bold.ttf", 12)
-	love.graphics.setFont(font)
+	game_font = love.graphics.newFont("assets/Amagro-bold.ttf", 60)
   if size then
   	display_size = {}
   	display_size.x = size[1]
@@ -121,12 +121,12 @@ function game.render(offset)
 	love.graphics.setColor(1, 1, 1)
 	-- love.graphics.rectangle('fill', apple.x, apple.y, apple.size, apple.size)
 	love.graphics.draw(appleImage, apple.x+ox, apple.y+oy)
-
-	love.graphics.print("Score: " .. #body .. "/"..target, 20+ox, 20+oy, 0, 2)
+  love.graphics.setFont(game_font)
+	love.graphics.print("Score: " .. #body .. "/"..target, 20+ox, 20+oy, 0, 0.4)
 
 	if (gameExit) then
-		love.graphics.print("Game Over", display_size.x / 2 - 200+ox, display_size.y / 2-30+oy, 0, 5)
-		love.graphics.print("Press p to play again", display_size.x / 2 - 200+ox, display_size.y / 2 + 100+oy, 0, 3)
+		love.graphics.print("Game Over", display_size.x / 2 - 200+ox, display_size.y / 2-30+oy, 0, 1)
+		love.graphics.print("Press lctrl to restart", display_size.x / 2 - 200+ox, display_size.y / 2 + 100+oy, 0, 0.6)
 	end
  end
 

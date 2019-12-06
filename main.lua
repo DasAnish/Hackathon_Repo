@@ -1,13 +1,14 @@
 
 local testgame = require("flappy")
---local testgame2 = require("asteroids")
+local testgame2 = require("asteroids")
+local testgame3 = require("snakegame")
 local screensize={640,480}
-local games={testgame}
+local games={testgame,testgame3,testgame2}
 local cgame=1
-ROW_LENGTH=3
+ROW_LENGTH=2
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
-  love.window.setMode(screensize[1]*#games,screensize[2])
+  love.window.setMode(screensize[1]*ROW_LENGTH,screensize[2]*math.ceil(#games/ROW_LENGTH))
   for i,g in ipairs(games) do
     g.setup(screensize)
   end
@@ -46,7 +47,7 @@ end
 
 function love.draw()
   for i,g in ipairs(games) do
-    g.render({(i-1)*screensize[1],0},screensize)
+    g.render({(i-1)%ROW_LENGTH*screensize[1],screensize[2]*math.floor((i-1)/ROW_LENGTH)},screensize)
     local f=1
     if i==cgame then
       f=2
@@ -54,6 +55,6 @@ function love.draw()
     if g.done then
       f=3
     end
-    love.graphics.draw(frames[f],(i-1)*screensize[1],0,0,5,5)
+    love.graphics.draw(frames[f],(i-1)%ROW_LENGTH*screensize[1],screensize[2]*math.floor((i-1)/ROW_LENGTH),0,5,5)
   end
 end
