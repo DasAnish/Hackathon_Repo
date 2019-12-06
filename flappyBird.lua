@@ -12,7 +12,7 @@ function setup()
   flappyBird.player.x = 100
   flappyBird.player.y = 300
   flappyBird.player.w = 30
-  flappyBird.player.h = 30
+  flappyBird.player.h = 50
   flappyBird.player.velocity = 0
   flappyBird.timer = 0
   flappyBird.obstacles = {}
@@ -31,8 +31,8 @@ function update(dt)
   if not flappyBird.gameOver then
     flappyBird.player.y = flappyBird.player.y + flappyBird.player.velocity
     flappyBird.player.velocity = flappyBird.player.velocity + 0.5
-    if flappyBird.player.y >= flappyBird.height - (flappyBird.player.h + 20) then
-      flappyBird.player.y = flappyBird.height - (flappyBird.player.h + 20)
+    if flappyBird.player.y >= flappyBird.height - (flappyBird.player.h + 30) then
+      flappyBird.player.y = flappyBird.height - (flappyBird.player.h + 30)
       flappyBird.player.velocity = 0
     elseif flappyBird.player.y <= 0 then
       flappyBird.player.y = 1
@@ -61,8 +61,8 @@ function update(dt)
         table.remove(flappyBird.obstacles, i)
         flappyBird.score = flappyBird.score + 1
       end
-      if collide(flappyBird.player.x + 20, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, 0, flappyBird.obstacles[i].w, flappyBird.obstacles[i].y) or
-        collide(flappyBird.player.x + 20, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, flappyBird.obstacles[i].y + flappyBird.gap, flappyBird.obstacles[i].w, flappyBird.height) then
+      if collide(flappyBird.player.x + 10, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, 0, flappyBird.obstacles[i].w, flappyBird.obstacles[i].y) or
+        collide(flappyBird.player.x + 10, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, flappyBird.obstacles[i].y + flappyBird.gap, flappyBird.obstacles[i].w, flappyBird.height) then
           flappyBird.gameOver = true
       end
     end
@@ -71,7 +71,7 @@ function update(dt)
     flappyBird.player.x = 100
     flappyBird.player.y = 300
     flappyBird.player.w = 30
-    flappyBird.player.h = 30
+    flappyBird.player.h = 50
     flappyBird.player.velocity = 0
     flappyBird.timer = 0
     flappyBird.obstacles = {}
