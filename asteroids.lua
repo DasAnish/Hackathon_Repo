@@ -12,6 +12,7 @@ local asteroids={}
 local laser=nil
 local difficulty=5
 local sx,sy
+game.strike=false
 function draw_rot_poly(x,y,r,col,mode,poly,scale)
   scale=scale or 1
   love.graphics.setColor(unpack(col))
@@ -108,6 +109,7 @@ function game.on_focused(dt)
     end
   end
   if #collide(player,asteroids)>0 or off_screen(player) then
+    game.strike=true
     game.setup({sx,sy})
   end
   if laser then

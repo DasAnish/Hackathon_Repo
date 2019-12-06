@@ -1,18 +1,13 @@
 
-<<<<<<< HEAD
 local testgame = require("flappy")
 local testgame2 = require("asteroids")
 local testgame3 = require("snakegame")
+local timer = require("timer")
 local screensize={640,480}
-local games={testgame,testgame3,testgame2}
-=======
-local testgame = require("timer")
--- local testgame2 = require("asteroids")
-local screensize={640,480}
-local games={testgame}
->>>>>>> 7e9004813b9a21a36508a3a80aa73e005cb12ff8
+local games={testgame,testgame3,testgame2,timer}
 local cgame=1
-ROW_LENGTH=2
+local rflash=0
+ROW_LENGTH=2 
 function love.load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.window.setMode(screensize[1]*ROW_LENGTH,screensize[2]*math.ceil(#games/ROW_LENGTH))
@@ -24,10 +19,26 @@ function love.load()
   frame3=love.graphics.newImage("frame3.png")
   frames={frame1,frame2,frame3}
   music=love.audio.newSource("tension.mp3","stream")
+  error=love.audio.newSource("error.wav", "static")
   music:play()
+  timer.timeLeft=300
 end
 
 function love.update(dt)
+  timer.update(dt)
+  if timer.timeLeft<0 then
+    love.event.quit()
+  end
+  timer.done=true
+  for i,g in ipairs(games) do
+    if g~=timer and not g.done then
+      timer.done=false
+      break
+    end
+  end
+  if rflash>0 then
+    rflash=rflash-dt
+  end
   if love.mouse.isDown(1) then
     mx,my=love.mouse.getPosition()
     local n=math.floor(mx/screensize[1])%ROW_LENGTH+math.floor(my/screensize[2])*ROW_LENGTH+1
@@ -47,8 +58,15 @@ function love.update(dt)
         break
       end
     end
+  elseif games[cgame].strike then
+    games[cgame].strike=false
+    timer.lifeCount=timer.lifeCount+1
+    error:play()
+    if timer.lifeCount==3 then
+      love.event.quit()
+    end
+    rflash=0.2
   end
-
   games[cgame].on_focused(dt)
 end
 
@@ -62,6 +80,10 @@ function love.draw()
     if g.done then
       f=3
     end
+    if rflash>0 then
+      love.graphics.setColor(1, 0,0)
+    end
     love.graphics.draw(frames[f],(i-1)%ROW_LENGTH*screensize[1],screensize[2]*math.floor((i-1)/ROW_LENGTH),0,5,5)
+    love.graphics.setColor(1, 1,1)
   end
 end

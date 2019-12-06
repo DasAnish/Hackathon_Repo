@@ -18,6 +18,8 @@ function flappyBird.setup(size)
   flappyBird.obstacles = {}
   flappyBird.score = 0
   flappyBird.gameOver = false
+  flappyBird.done=false
+  flappyBird.target=10
   flappyBird.jump = false
   flappyBird.gap = 170
   flappyBird.width, flappyBird.height =unpack(size)
@@ -60,10 +62,14 @@ function flappyBird.on_focused(dt)
       if flappyBird.obstacles[i].x + 10 < 0 then
         table.remove(flappyBird.obstacles, i)
         flappyBird.score = flappyBird.score + 1
+        if flappyBird.score==flappyBird.target then
+          flappyBird.done=true
+        end
       end
       if flappyBird.collide(flappyBird.player.x + 20, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, 0, flappyBird.obstacles[i].w, flappyBird.obstacles[i].y) or
         flappyBird.collide(flappyBird.player.x + 20, flappyBird.player.y + 10, flappyBird.player.w, flappyBird.player.h, flappyBird.obstacles[i].x, flappyBird.obstacles[i].y + flappyBird.gap, flappyBird.obstacles[i].w, flappyBird.height) then
           flappyBird.gameOver = true
+          flappyBird.strike=true
       end
     end
     flappyBird.timer = flappyBird.timer - 1
@@ -98,7 +104,7 @@ function flappyBird.render()
   love.graphics.setColor(1,1,1)
   love.graphics.setFont(flappyBird.assets.fontSmall)
   if not flappyBird.gameOver then
-    love.graphics.print('flappyBird.score: '..flappyBird.score, 10, 10)
+    love.graphics.print('score: '..flappyBird.score.."/"..flappyBird.target, 10, 10)
   else
     love.graphics.setFont(flappyBird.assets.fontBig)
     love.graphics.print('flappyBird.score:'..flappyBird.score, flappyBird.width / 8, flappyBird.height / 6)

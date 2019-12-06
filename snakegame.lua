@@ -1,7 +1,10 @@
  -- remember to make a load and and update and stuff
 local game={}
 game.done=false
+game.strike=false
+local spf=0.06
 local game_font=nil
+local frame_time=0
  function game.setup(size)
 
 	math.randomseed(os.time())
@@ -42,54 +45,61 @@ function game.on_focused(dt)
 		Snake_update(dt)
 	end
 
-	if (gameExit and love.keyboard.isDown("p")) then
+	if (gameExit and love.keyboard.isDown("lctrl")) then
     game.setup()
 	end
 end
 
 
 function Snake_update(dt)
-	love.timer.sleep(1/30)
+  frame_time=frame_time+dt
+  while frame_time>spf do
+    frame_time=frame_time-spf
+  	love.timer.sleep(1/30)
 
-	if love.keyboard.isDown("a") then
-		dir = 0
-	elseif love.keyboard.isDown("d") then
-		dir = 2
-	elseif love.keyboard.isDown("w") then
-		dir = 3
-	elseif love.keyboard.isDown("s") then
-		dir = 1
-	end
+  	if love.keyboard.isDown("a") then
+  		dir = 0
+  	elseif love.keyboard.isDown("d") then
+  		dir = 2
+  	elseif love.keyboard.isDown("w") then
+  		dir = 3
+  	elseif love.keyboard.isDown("s") then
+  		dir = 1
+  	end
 
-	local temp = {}
-	temp.x = head.x
-	temp.y = head.y
-	table.insert(body, temp) -- adding the head pos to the body before updating head
+  	local temp = {}
+  	temp.x = head.x
+  	temp.y = head.y
+  	table.insert(body, temp) -- adding the head pos to the body before updating head
 
-	if (dir == 2) then -- left
-		head.x = head.x + step
-	elseif (dir == 1) then -- down
-		head.y = head.y + step
-	elseif (dir == 0) then -- right
-		head.x = head.x - step
-	else -- up
-		head.y = head.y - step
-	end
+  	if (dir == 2) then -- left
+  		head.x = head.x + step
+  	elseif (dir == 1) then -- down
+  		head.y = head.y + step
+  	elseif (dir == 0) then -- right
+  		head.x = head.x - step
+  	else -- up
+  		head.y = head.y - step
+  	end
 
-	head.y = head.y % display_size.y
-	head.x = head.x % display_size.x
+  	head.y = head.y % display_size.y
+  	head.x = head.x % display_size.x
 
-	gameExit = gameExit or collionSelf()
+    if not gameExit and collionSelf() then
+      gameExit=true
+      game.strike=true
+    end
 
-	-- now need to update the body and remove the latest value
-	if (not eatingFood()) then
-		table.remove(body, 1)
-	else
-		-- assign a new position for the food
-		apple.x = math.random(50, display_size.x - 50)
-		apple.y = math.random(50, display_size.y - 50)
-    game.done=#body==target
-	end
+  	-- now need to update the body and remove the latest value
+  	if (not eatingFood()) then
+  		table.remove(body, 1)
+  	else
+  		-- assign a new position for the food
+  		apple.x = math.random(50, display_size.x - 50)
+  		apple.y = math.random(50, display_size.y - 50)
+      game.done=#body==target
+  	end
+  end
 
  end
 
