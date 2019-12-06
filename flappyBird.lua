@@ -111,3 +111,4 @@ function flappyBird.render()
     love.graphics.print('lctrl to play again', flappyBird.width / 8, flappyBird.height / 6 + 100)
   end
 end
+return flappyBird

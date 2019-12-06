@@ -2,12 +2,12 @@ local alex = {}
 
 function alex.setup()
   alex.assets = {}
-  alex.assets.player = love.graphics.newImage('assets/Alien sprites/alienBeige_stand.png')
-  alex.assets.jump = love.graphics.newImage('assets/Alien sprites/alienBeige_jump.png')
-  alex.assets.crouch = love.graphics.newImage('assets/Alien sprites/alienBeige_duck.png')
-  alex.assets.fontSmall = love.graphics.newFont('assets/earwig-factory/earwig factory rg.ttf', 32)
-  alex.assets.fontBig = love.graphics.newFont('assets/earwig-factory/earwig factory rg.ttf', 64)
-  alex.assets.bullet = love.graphics.newImage('assets/bullet_game_assets/bullet1.png')
+  alex.assets.player = love.graphics.newImage('assets/alienBeige_stand.png')
+  alex.assets.jump = love.graphics.newImage('assets/alienBeige_jump.png')
+  alex.assets.crouch = love.graphics.newImage('assets/alienBeige_duck.png')
+  alex.assets.fontSmall = love.graphics.newFont('assets/earwig factory rg.ttf', 32)
+  alex.assets.fontBig = love.graphics.newFont('assets/earwig factory rg.ttf', 64)
+  alex.assets.bullet = love.graphics.newImage('assets/bullet1.png')
   alex.assets.floor = love.graphics.newImage('assets/floor.png')
   alex.assets.fire = love.graphics.newImage('assets/Fiyah.png')
   alex.player = {}
@@ -131,3 +131,4 @@ function alex.render()
     love.graphics.print('alex.score: '..alex.score, 10, 10)
   end
 end
+return alex
