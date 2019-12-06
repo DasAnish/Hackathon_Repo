@@ -1,9 +1,16 @@
 
+<<<<<<< HEAD
 local testgame = require("flappy")
 local testgame2 = require("asteroids")
 local testgame3 = require("snakegame")
 local screensize={640,480}
 local games={testgame,testgame3,testgame2}
+=======
+local testgame = require("timer")
+-- local testgame2 = require("asteroids")
+local screensize={640,480}
+local games={testgame}
+>>>>>>> 7e9004813b9a21a36508a3a80aa73e005cb12ff8
 local cgame=1
 ROW_LENGTH=2
 function love.load()
